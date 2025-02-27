@@ -158,6 +158,7 @@ def perform_shapiro_test_on_concatenated_data(data_imaginary, data_real, is_norm
         count_wrong = sum(p < 0.05 for p in p_values)  # p < 0.05 is "wrong" for normal data
     else:
         count_wrong = sum(p > 0.05 for p in p_values)  # p > 0.05 is "wrong" for non-normal data
-
+    
+    delta_fnr = 1/(len(data_imaginary))
     # Calculate and return the percentage of wrong p-values
-    return (count_wrong / len(p_values)) * 100
+    return (1-(count_wrong / len(p_values)) )* 100, delta_fnr * 100

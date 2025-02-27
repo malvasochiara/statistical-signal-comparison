@@ -5,8 +5,8 @@ import random
 import math
 import time
 from tqdm import tqdm
-import generate_and_plot_signal.py as sgen
-import processing_functions.py as pro
+import generate_and_plot_signal as sgen
+import processing_functions as pro
 
 
 ##################################################################################
@@ -19,9 +19,9 @@ base_frequencies = []
 clean_signal = []
 s_rate = 500
 duration = 2
-N_signals = 15 # number of different signals
+N_signals = 20 # number of different signals
 N_signal_noisy = 20 # number of noisy signal, i.e. number of copy of the same signal
-N_max_components = 10 # maximum number of components
+N_max_components = 40 # maximum number of components
 snr_db= np.linspace(10,100, N_signal_noisy)
 slope = 0.6
 noise = "white" # "colored"
@@ -72,11 +72,11 @@ for ii in tqdm(range(N_signals)):
 # STEP (i): Compute FFT and apply linear detrending
 fft_complex, freqs_fft = pro.compute_complex_fft(signals, s_rate)
 # STEP (ii): Compute FFT differences for same and different signals
-fftR_diff_SAME, fftI_diff_SAME, fft_diff_SAME, fftR_diff_DIFF, fftI_diff_DIFF, fft_diff_DIFF = pro.ompute_fft_differences(fft_complex, labels)
+fftR_diff_SAME, fftI_diff_SAME, fft_diff_SAME, fftR_diff_DIFF, fftI_diff_DIFF, fft_diff_DIFF = pro.compute_fft_differences(fft_complex, labels)
 
 ##################################################################################
                         #  CHECK THE RESULTS
 ##################################################################################
 
 print(pro.perform_shapiro_test_on_concatenated_data(fftI_diff_SAME, fftR_diff_SAME))
-print(pro.perform_shapiro_test_on_concatenated_data(fftI_diff_DIFF, fftR_diff_DIFF, False))
+#print(pro.perform_shapiro_test_on_concatenated_data(fftI_diff_DIFF, fftR_diff_DIFF, False))
